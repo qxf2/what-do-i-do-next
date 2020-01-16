@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <title>What next?</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/sigma.min.js"
+        integrity="sha256-ii2D7w2jthCadZtIl2OjRn2vu1iEtGWcOrmd+UOZorc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.parsers.gexf.min.js"
+        integrity="sha256-axtL70i9hfG/v4VW5dLBdU79LOehACwFm6DWCVrWSH4=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        #network-chart {
+            max-width: 800px;
+            height: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <button onclick="displayGraph()">Click me!</button>
+    </div>
+    <div id="network-chart">
+    </div>
+    <script>
+        function displayGraph() {
+            var i,
+                s,
+                N = 5,
+                E = 5,
+                g = {
+                    nodes: [{id:1,label:'Python',x:1,y:1,size:5},
+                            {id:2,label:'Selenium',x:3,y:1,size:3},
+                            {id:3,label:'Jenkins',x:2,y:2,size:2},
+                            {id:4,label:'Flask',x:0,y:0,size:1},
+                            {id:5,label:'webdriver',x:4,y:0,size:1}],
+                    edges: [{id:'e1', source: 1, target: 2, size: 4},
+                            {id:'e2', source: 1, target: 3, size: 3},
+                            {id:'e3', source: 1, target: 4, size: 1},
+                            {id:'e4', source: 2, target: 3, size: 2},
+                            {id:'e5', source: 2, target: 5, size: 3},]
+                };
+
+            /* Generate a random graph:
+            for (i = 0; i < N; i++)
+                g.nodes.push({
+                    id: 'n' + i,
+                    label: 'Node ' + i,
+                    x: Math.random(),
+                    y: Math.random(),
+                    size: Math.random(),
+                    color: '#666'
+                });
+
+            for (i = 0; i < E; i++)
+                g.edges.push({
+                    id: 'e' + i,
+                    source: 'n' + (Math.random() * N | 0),
+                    target: 'n' + (Math.random() * N | 0),
+                    size: Math.random(),
+                    color: '#ccc'
+                });
+            */
+            // Instantiate sigma:
+            s = new sigma({
+                graph: g,
+                container: 'network-chart'
+            });
+
+        }
+    </script>
+</body>
+
+</html>
