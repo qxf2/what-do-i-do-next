@@ -17,12 +17,16 @@
 
 <body>
     <div>
+        <label>List some technologies you know:</label>
+        <input type="text" id="searchBar">
         <button onclick="displayGraph()">Click me!</button>
     </div>
     <div id="network-chart">
     </div>
     <script>
         function displayGraph() {
+            var terms = document.getElementById("searchBar").value;
+            console.log(terms);
             var i,
                 s,
                 N = 5,
