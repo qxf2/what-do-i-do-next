@@ -13,6 +13,9 @@ import csv
 
 CURR_FILEPATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(CURR_FILEPATH)
+DATA_DIR = os.path.join(ROOT_DIR,'data')
+if not os.path.exists(DATA_DIR):
+    os.mkdir(DATA_DIR)
 DB_FILE = os.path.join(ROOT_DIR,'data','whatnext.db')
 
 RAW_TABLE = 'raw'
@@ -101,14 +104,17 @@ def create_db(csv_file):
 
 def setup_database(csv_file):
     "Setup the database"
+    if not os.path.exists(csv_file):
+        print("Could not locate the CSV file to load data from: {}".format(csv_file))
+        return
     if not os.path.exists(DB_FILE):
         create_db(csv_file)
-    print("Done")
+        print("Done")
     
 
 #----START OF SCRIPT
 if __name__=='__main__':
-    csv_file = os.path.join(ROOT_DIR,'data','stackoverflow_data.csv')
+    csv_file = os.path.join(DATA_DIR,'stackoverflow_data.csv')
     usage = "USAGE:\npython {} <optional: path to stackoverflow csv data>\npython {} ../data/stackoverflow_data.csv".format(__file__,__file__)
     if len(sys.argv)>1:
         if not os.path.exists(sys.argv[1]):
