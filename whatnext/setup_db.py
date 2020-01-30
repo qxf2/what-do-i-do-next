@@ -62,12 +62,13 @@ def setup_tag_pair_data(db_cursor):
         for i,first_tag in enumerate(tag_data[:-1]):
             for second_tag in tag_data[i+1:]:
                 result = db_cursor.execute(tag_pair_query_select.format(TAG_PAIR_TABLE,TAG_PAIR_COL_1,first_tag,TAG_PAIR_COL_2,second_tag)).fetchone()
-                if result is None:
-                    count = 1
-                else:
+                count = 1
+                if result is not None:
+                    print(result)
                     count = result[2] + 1
                     view_count += int(result[3])
-                db_cursor.execute(tag_pair_query_insert.format(TAG_PAIR_TABLE),(first_tag,second_tag,1,view_count))
+                    print(tag_pair_query_insert.format(TAG_PAIR_TABLE),(first_tag,second_tag,count,view_count))
+                db_cursor.execute(tag_pair_query_insert.format(TAG_PAIR_TABLE),(first_tag,second_tag,count,view_count))
 
     return db_cursor
 
