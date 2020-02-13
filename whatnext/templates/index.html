@@ -6,6 +6,8 @@
         integrity="sha256-ii2D7w2jthCadZtIl2OjRn2vu1iEtGWcOrmd+UOZorc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.1/plugins/sigma.parsers.gexf.min.js"
         integrity="sha256-axtL70i9hfG/v4VW5dLBdU79LOehACwFm6DWCVrWSH4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <style type="text/css">
         #network-chart {
             max-width: 800px;
@@ -19,12 +21,12 @@
     <div>
         <label>List some technologies you know:</label>
         <input type="text" id="searchBar">
-        <button onclick="displayGraph()">Click me!</button>
+        <button id="displayGraphButton">Click me!</button>
     </div>
     <div id="network-chart">
     </div>
     <script>
-        function displayGraph() {
+        $("#displayGraphButton").click(function(){
             var terms = document.getElementById("searchBar").value;
             console.log(terms);
             var i,
@@ -43,34 +45,20 @@
                             {id:'e4', source: 2, target: 3, size: 2},
                             {id:'e5', source: 2, target: 5, size: 3},]
                 };
-
-            /* Generate a random graph:
-            for (i = 0; i < N; i++)
-                g.nodes.push({
-                    id: 'n' + i,
-                    label: 'Node ' + i,
-                    x: Math.random(),
-                    y: Math.random(),
-                    size: Math.random(),
-                    color: '#666'
-                });
-
-            for (i = 0; i < E; i++)
-                g.edges.push({
-                    id: 'e' + i,
-                    source: 'n' + (Math.random() * N | 0),
-                    target: 'n' + (Math.random() * N | 0),
-                    size: Math.random(),
-                    color: '#ccc'
-                });
-            */
+            $.ajax({
+                type: 'POST',
+                url: '/',
+                data: {'terms':terms},
+                success: function (result) {
+                    console.log(result);
+                }
+            });
             // Instantiate sigma:
             s = new sigma({
                 graph: g,
                 container: 'network-chart'
             });
-
-        }
+        });
     </script>
 </body>
 

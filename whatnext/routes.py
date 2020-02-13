@@ -11,4 +11,9 @@ from whatnext.models import Raw
 @app.route("/",methods=["GET","POST"])
 def home():
     "Return the index page"
-    return render_template("index.html")
+    if request.method == 'GET':
+        return render_template("index.html")
+    if request.method == 'POST':
+        query_string = request.form.get('terms')
+        technologies = query_string.split(',')
+        return jsonify({'answer':technologies})
