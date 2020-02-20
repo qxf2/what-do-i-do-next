@@ -112,6 +112,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+venv*/
 
 # Spyder project settings
 .spyderproject
@@ -130,3 +131,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Project specific
+data/stackoverflow_db.csv
+stackoverflow_tags.db
+

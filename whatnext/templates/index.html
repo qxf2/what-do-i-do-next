@@ -23,40 +23,25 @@
         <input type="text" id="searchBar">
         <button id="displayGraphButton">Click me!</button>
     </div>
-    <div id="network-chart">
+    <div id="results">
     </div>
     <script>
         $("#displayGraphButton").click(function(){
             var terms = document.getElementById("searchBar").value;
             console.log(terms);
-            var i,
-                s,
-                N = 5,
-                E = 5,
-                g = {
-                    nodes: [{id:1,label:'Python',x:1,y:1,size:5},
-                            {id:2,label:'Selenium',x:3,y:1,size:3},
-                            {id:3,label:'Jenkins',x:2,y:2,size:2},
-                            {id:4,label:'Flask',x:0,y:0,size:1},
-                            {id:5,label:'webdriver',x:4,y:0,size:1}],
-                    edges: [{id:'e1', source: 1, target: 2, size: 4},
-                            {id:'e2', source: 1, target: 3, size: 3},
-                            {id:'e3', source: 1, target: 4, size: 1},
-                            {id:'e4', source: 2, target: 3, size: 2},
-                            {id:'e5', source: 2, target: 5, size: 3},]
-                };
             $.ajax({
                 type: 'POST',
                 url: '/',
                 data: {'terms':terms},
                 success: function (result) {
-                    console.log(result);
+                    console.log(result['answer']);
+                    var counter;
+                    var techNames = '';
+                    for (counter=0; counter<result.answer.length;counter++){
+                        techNames += result.answer[counter] + "<br>";
+                    }
+                    $("#results").html(techNames);
                 }
-            });
-            // Instantiate sigma:
-            s = new sigma({
-                graph: g,
-                container: 'network-chart'
             });
         });
     </script>
