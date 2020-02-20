@@ -29,7 +29,7 @@ TAG_TABLE = 'tag'
 TAG_COL_1 = 'id'
 TAG_COL_2 = 'name'
 
-TAG_PAIR_TABLE = 'tag_pair'
+TAG_PAIR_TABLE = 'tagpair'
 TAG_PAIR_COL_1 = 'tag1'
 TAG_PAIR_COL_2 = 'tag2'
 TAG_PAIR_COL_3 = 'count'
