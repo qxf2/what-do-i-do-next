@@ -12,21 +12,25 @@
         <input type="text" id="searchBar">
         <button id="displayGraphButton">Click me!</button>
     </div>
-    <canvas id="springyGraph" width="600" height="400" />
-    </div>
     <script>
         $("#displayGraphButton").click(function(){
+            if (document.contains(document.getElementById("springyGraph"))) {
+                document.getElementById("springyGraph").remove();}
+            var canvas = document.createElement("canvas");
+            canvas.id = "springyGraph";
+            canvas.width = 600;
+            canvas.height = 400;
+            document.body.appendChild(canvas);
             var terms = document.getElementById("searchBar").value;
-            console.log(terms);
+            var graph = new Springy.Graph();
             $.ajax({
                 type: 'POST',
                 url: '/',
                 data: {'terms':terms},
                 success: function (result) {
                     console.log(result['graph']);
-                    var graph = new Springy.Graph();
                     graph.loadJSON(result['graph']);
-                    var springy = jQuery('#springyGraph').springy({graph: graph})
+                    springy = jQuery('#springyGraph').springy({graph: graph});
                 }
             });
         });
