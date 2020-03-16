@@ -17,4 +17,3 @@ class Tagpair(db.Model):
     tag1 = db.Column(db.String,primary_key=True)
     tag2 = db.Column(db.String,primary_key=True)
     count = db.Column(db.Integer)
-    view_count = db.Column(db.Integer)

@@ -18,8 +18,8 @@
                 document.getElementById("springyGraph").remove();}
             var canvas = document.createElement("canvas");
             canvas.id = "springyGraph";
-            canvas.width = 600;
-            canvas.height = 400;
+            canvas.width = 0.7*window.innerWidth;
+            canvas.height = 0.67*canvas.width;
             document.body.appendChild(canvas);
             var terms = document.getElementById("searchBar").value;
             var graph = new Springy.Graph();
