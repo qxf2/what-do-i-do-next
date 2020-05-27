@@ -1,53 +1,54 @@
 """
 This module contains the db table models for the 'What next' application
 """
-from whatnext import db
+#from whatnext import db
 #from sqlalchemy import Integer, ForeignKey, String, Column,CheckConstraint
 #from py2neo import Graph,Relationship,Node
-from py2neo import Graph, Node, Relationship
+from py2neo import Graph, Node, Relationship,NodeMatcher
+import pandas as pd
 
 
 class Neodb:
     "Model the tags"
     print("I am coming here")
-    def tags(self):
-        graph = Graph("http://neo4j:TestQxf2@127.0.0.1/db/data")
-        try:
-            graph.run("Match () Return 1 Limit 1")
-            print('ok')
-        except Exception:
-            print('not ok')
-        tags1=Node("Table",tagName="Java")
-        tags2=Node("Table",tagName="Selenium")
-        tags3=Node("Table",tagName="Python")
-        graph.create(tags1)
-        graph.create(tags2)
-        graph.create(tags3)
+    graph = Graph("http://neo4j:TestQxf2@127.0.0.1/db/data")
+    all_tag_list = []
+    final_list = []
+    try:
+        graph.run("Match () Return 1 Limit 1")
+        df=pd.read_csv("C:/Users/annap/code/what-do-i-do-next/data/stackoverflow_data.csv")
 
-    """def tagpair():
-        tagpair1 = Node("Tagpair",tagpair="Python,Selenium",viewpair="1000")
-        tagpair2 = Node("Tagpair",tagpair="Jenkins,Selenium",viewpair="100")
-        tagpair3 = Node("Tagpair",tagpair="Python,Jenkins",viewpair="5000")
-        tagpair4 = Node("Tagpair",tagpair="Jenkins,Java",viewpair="13567")
-        tagpair5 = Node("Tagpair",tagpair="aws,java,Selenium",viewpair="1521")
-        tags= 'python|selenium|jenkins'
+        graph.delete_all()
 
-        tags = [x.strip() for x in tags.lower().split('|')]
-        for t in set(tags):
-            tag = graph.merge_one("Tag", "name", t)
-            rel = Relationship(tag, "TAGGED", tagpair1)
-            graph.create(rel)"""
+        matcher = NodeMatcher(graph)
+        row_count = len(df)
+        for each_tags in df['tags']:
+            each_tag = each_tags.split('|')
+            tag_data = [x.lower() for x in each_tag]
+            for each_tag_data in tag_data:
+                all_tag_list.append(each_tag_data)
 
-"""class Raw(db.Model):
-    "Model the raw table" 
-    row_id = db.Column(db.String,primary_key=True)   
-    answer_count = db.Column(db.String)
-    last_activity_date = db.Column(db.String)
-    tags = db.Column(db.String)    
-    view_count = db.Column(db.String)
+        final_list=list(set(all_tag_list))
+        final_list.sort()
 
-class Tagpair(db.Model):
-    "Model the tag pair table"
-    tag1 = db.Column(db.String,primary_key=True)
-    tag2 = db.Column(db.String,primary_key=True)
-    count = db.Column(db.Integer)"""
+        for i,tags in enumerate(final_list):
+            vartag = "tag"+str(i)
+            var_tag = Node("May21tag",tagName=tags)
+
+            graph.create(var_tag)
+
+        #for i in range(row_count):
+        for each_tags in df['tags']:
+            each_tag = each_tags.split('|')
+            tag_data = [x.lower() for x in each_tag]
+            for j,first_tag in enumerate(tag_data[:-1]):
+                match_first_tag = matcher.match("May21tag",tagName=first_tag).first()
+                for second_tag in tag_data[j+1:]:
+                    second_tag = matcher.match("May21tag",tagName=second_tag).first()
+                    create_relationship = Relationship(match_first_tag ,"tagged",second_tag)
+                    graph.merge(create_relationship)
+                    check_exists =len(graph.match(nodes=[match_first_tag,second_tag],r_type="tagged"))
+                    print(check_exists)
+
+    except Exception as e:
+        print('not ok',e)
