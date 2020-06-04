@@ -4,8 +4,6 @@ This module contains the initial Flask configuration for the 'What next' applica
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
-from .models import graph
-
 
 app = Flask(__name__)
 db_file = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'data','whatnext.db'))

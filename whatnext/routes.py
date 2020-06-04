@@ -8,7 +8,7 @@ from whatnext import app
 from whatnext import db
 from whatnext.models import Neodb
 
-"""@app.route("/",methods=["GET","POST"])
+@app.route("/",methods=["GET","POST"])
 def home():
     "Return the index page"
     if request.method == 'GET':
@@ -29,14 +29,5 @@ def home():
                     associated_tech_graph['nodes'].append(row.tag2)
                 if [row.tag1,row.tag2] not in associated_tech_graph['edges']:
                     associated_tech_graph['edges'].append([row.tag1,row.tag2])
-        return jsonify({'graph':associated_tech_graph})"""
+        return jsonify({'graph':associated_tech_graph})
 
-@app.route("/tags",methods=["GET","POST"])
-def tags():
-    "Place all the tags to the database from the csv "
-    if request.method == 'GET':
-        return render_template("index.html")
-    if request.method == 'POST':
-        tags=["Python","java","javascript","selenium","jenkins",'aws','css','html']
-        Neodb.tags(tags)
-        #return jsonify(tags)    
