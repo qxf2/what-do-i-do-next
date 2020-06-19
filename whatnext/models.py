@@ -61,6 +61,7 @@ class Neodb:
                     #Check how many relations are there between the nodes
 
                     check_exists =len(graph.match(nodes=[match_first_tag,second_tag],r_type="tagged"))
+        my_list = ['']
 
     except Exception as e:
         print('not ok',e)
