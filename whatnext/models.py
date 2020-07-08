@@ -6,9 +6,10 @@ This module contains the db table models for the 'What next' application
 #from py2neo import Graph,Relationship,Node
 from py2neo import Graph, Node, Relationship,NodeMatcher
 import pandas as pd
+#from neo4jrestclient import client
 
 
-class Neodb:
+class Tags:
     "Model the tags"
     print("I am coming here")
     graph = Graph("http://neo4j:TestQxf2@127.0.0.1/db/data")
@@ -56,12 +57,23 @@ class Neodb:
                     second_tag['answer_count']=answer_count.item()
                     second_tag['view_count']=view_count.item()
                     graph.push(second_tag)
+                    #print(match_first_tag,second_tag)
                     create_relationship = Relationship(match_first_tag ,"tagged",second_tag)
                     graph.merge(create_relationship)
-                    #Check how many relations are there between the nodes
 
+                    #Check how many relations are there between the nodes
                     check_exists =len(graph.match(nodes=[match_first_tag,second_tag],r_type="tagged"))
-        my_list = ['']
 
     except Exception as e:
         print('not ok',e)
+
+    def __init__(tech):
+        tech_word = tech
+        print("in init")
+
+    def fetch_nodes(self,tech_word):
+        graph = Graph("http://neo4j:TestQxf2@127.0.0.1/db/data")
+        matcher = NodeMatcher(graph)
+        match_nodes = matcher.match(tagName=tech_word).first()
+        return (list(r.end_node["tagName"] for r in self.graph.match(nodes=(match_nodes,))))
+

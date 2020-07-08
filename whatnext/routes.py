@@ -6,7 +6,7 @@ from flask import render_template, url_for, flash, redirect, jsonify, request, R
 from sqlalchemy import or_
 from whatnext import app
 from whatnext import db
-from whatnext.models import Neodb
+from whatnext.models import Tags
 
 @app.route("/",methods=["GET","POST"])
 def home():
@@ -14,6 +14,7 @@ def home():
     if request.method == 'GET':
         return render_template("index.html")
     if request.method == 'POST':
+        tags_object = Tags()
         query_string = request.form.get('terms')
         technologies = query_string.split(',')
         associated_tech_graph = {'nodes':[],'edges':[]}
@@ -21,7 +22,12 @@ def home():
         edge_id = 100
         for tech in technologies:
             tech = tech.strip().lower()
-            tech_pair_rows = Tagpair.query.filter(or_(Tagpair.tag1==tech, Tagpair.tag2==tech)).order_by(Tagpair.count.desc()).limit(6)
+            #MATCH (:May21tag { tagName: 'c#' })-->(movie) RETURN movie.tagName
+            print(tech)
+
+            tech_pair_rows = tags_object.fetch_nodes(tech)
+            print(tech_pair_rows)
+            """tech_pair_rows = Tagpair.query.filter(or_(Tagpair.tag1==tech, Tagpair.tag2==tech)).order_by(Tagpair.count.desc()).limit(6)"""
             for row in tech_pair_rows:
                 if row.tag1 not in associated_tech_graph['nodes']:
                     associated_tech_graph['nodes'].append(row.tag1)
