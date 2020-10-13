@@ -13,4 +13,3 @@ class Tags:
         matcher = NodeMatcher(graph)
         match_nodes = matcher.match(tagName=tech_word).first()
         return (list(r.end_node["tagName"] for r in graph.match(nodes=(match_nodes,)).limit(6)))
-
