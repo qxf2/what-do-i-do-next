@@ -4,14 +4,16 @@ This script setup the neo4j database by reading the CSV file.
 import os
 from py2neo import Graph, Node, Relationship,NodeMatcher
 import pandas as pd
+import conf.db_conf as url
+
 
 if __name__ == "__main__":
-    graph = Graph("http://neo4j:TestQxf2@127.0.0.1/db/data")
+    graph = Graph(url.db_url)
     all_tag_list = []
     final_list = []
 
     graph.run("Match () Return 1 Limit 1")
-    df = pd.read_csv(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'data/stackoverflow_data.csv')))
+    df = pd.read_csv(url.csv_file)
     graph.delete_all()
 
     matcher = NodeMatcher(graph)
@@ -48,7 +50,6 @@ if __name__ == "__main__":
                 second_tag['answer_count']=answer_count.item()
                 second_tag['view_count']=view_count.item()
                 graph.push(second_tag)
-                #print(match_first_tag,second_tag)
                 create_relationship = Relationship(match_first_tag ,"tagged",second_tag)
                 graph.merge(create_relationship)
 

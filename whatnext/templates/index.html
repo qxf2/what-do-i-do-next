@@ -17,8 +17,8 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <h3 class="margin-base-vertical text-center">Enter a few technologies that you know</h3>
-                <input type="text" id="searchBar" class="form-control input-lg" name="number" placeholder="Enter comma separated technologies you know">
-                
+                <input type="text" id="searchBar" class="form-control input-lg" name="number" placeholder="Enter comma separated technologies you know" required>
+
                 <p class="text-center top-space-10">
                     <button class="btn btn-success btn-lg" id="displayGraphButton">What do I learn next?</button>
                 </p>
@@ -30,8 +30,11 @@
     </div>
     <script>
         $("#displayGraphButton").click(function(){
+            var validValue = true;
+            var letters = /^([a-z,A-Z0-9 _-]+)$/
             if (document.contains(document.getElementById("springyGraph"))) {
                 document.getElementById("springyGraph").remove();}
+            var searchBar = $("#searchBar").val();
             var canvas = document.createElement("canvas");
             canvas.id = "springyGraph";
             canvas.width = 0.5*window.innerWidth;
@@ -39,6 +42,13 @@
             document.body.appendChild(canvas);
             var terms = document.getElementById("searchBar").value;
             var graph = new Springy.Graph();
+            var isValid = letters.test(searchBar)
+            if(!isValid){
+                $("#string").remove();
+                $("#searchBar").after('<span id="string" style="color:red">Please enter a valid string</span>')
+                validValue = false
+            }
+            if (validValue == true){
             $.ajax({
                 type: 'POST',
                 url: '/',
@@ -49,6 +59,7 @@
                     springy = jQuery('#springyGraph').springy({graph: graph});
                 }
             });
+            }
         });
     </script>
 </body>

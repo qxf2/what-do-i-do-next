@@ -4,12 +4,12 @@ This module contains the initial Flask configuration for the 'What next' applica
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from whatnext import routes
+import conf.db_conf as url
 
 app = Flask(__name__)
-db_file = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'data','whatnext.db'))
+db_file = url.db_file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///%s"%db_file
 db = SQLAlchemy(app)
 
-
+from whatnext import routes
