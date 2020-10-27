@@ -54,10 +54,13 @@
                 url: '/',
                 data: {'terms':terms},
                 success: function (result) {
-                    console.log(result['graph']);
+                    if (result.data == 'Success'){
                     graph.loadJSON(result['graph']);
                     springy = jQuery('#springyGraph').springy({graph: graph});
                 }
+                else{
+                    alert("Enter a valid tech word")
+                }}
             });
             }
         });

@@ -13,4 +13,7 @@ class Tags:
         graph = Graph(url.db_url)
         matcher = NodeMatcher(graph)
         match_nodes = matcher.match(tagName=tech_word).first()
+        if match_nodes == None:
+            return None
+
         return (list(r.end_node["tagName"] for r in graph.match(nodes=(match_nodes,)).limit(6)))

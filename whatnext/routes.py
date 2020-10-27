@@ -21,12 +21,17 @@ def home():
         for tech in technologies:
             tech = tech.strip().lower()
             tech_pair_rows = tags_object.fetch_nodes(tech)
-            if tech not in associated_tech_graph['nodes']:
-                associated_tech_graph['nodes'].append(tech)
-            for row in tech_pair_rows:
-                if row not in associated_tech_graph['nodes']:
-                    associated_tech_graph['nodes'].append(row)
-                if [row,tech] not in associated_tech_graph['edges']:
-                    associated_tech_graph['edges'].append([row,tech])
+            if tech_pair_rows == None:
+                data = 'error'
+                break
+            else:
+                if tech not in associated_tech_graph['nodes']:
+                    associated_tech_graph['nodes'].append(tech)
+                for row in tech_pair_rows:
+                    if row not in associated_tech_graph['nodes']:
+                        associated_tech_graph['nodes'].append(row)
+                    if [row,tech] not in associated_tech_graph['edges']:
+                        associated_tech_graph['edges'].append([row,tech])
+                data = 'Success'
 
-        return jsonify({'graph':associated_tech_graph})
+        return jsonify({'graph':associated_tech_graph,'data':data})
