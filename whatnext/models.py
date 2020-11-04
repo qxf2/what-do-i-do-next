@@ -1,19 +1,19 @@
 """
 This module contains the db table models for the 'What next' application
 """
-from whatnext import db
-from sqlalchemy import Integer, ForeignKey, String, Column,CheckConstraint
+from py2neo import Graph, Node, Relationship,NodeMatcher
+import conf.db_conf as url
 
-class Raw(db.Model):
-    "Model the raw table" 
-    row_id = db.Column(db.String,primary_key=True)   
-    answer_count = db.Column(db.String)
-    last_activity_date = db.Column(db.String)
-    tags = db.Column(db.String)    
-    view_count = db.Column(db.String)
+class Tags:
+    "Model the tags"
+    def __init__(tech):
+        tech_word = tech
 
-class Tagpair(db.Model):
-    "Model the tag pair table"
-    tag1 = db.Column(db.String,primary_key=True)
-    tag2 = db.Column(db.String,primary_key=True)
-    count = db.Column(db.Integer)
+    def fetch_nodes(self,tech_word):
+        graph = Graph(url.db_url)
+        matcher = NodeMatcher(graph)
+        match_nodes = matcher.match(tagName=tech_word).first()
+        if match_nodes == None:
+            return None
+
+        return (list(r.end_node["tagName"] for r in graph.match(nodes=(match_nodes,)).limit(6)))
