@@ -15,7 +15,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 neobolt==1.7.17
 neotime==1.7.4
-numpy==1.18.4
+numpy==1.22.0
 pandas==1.0.3
 prompt-toolkit==2.0.10
 py2neo==5.0b1
